@@ -1,10 +1,13 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import './menu-container.styles.css'
 
-const MenuContainer = ({ title, imageUrl, size }) => (
-    <div 
-    className= {`${size} menu-container`}> 
+const MenuContainer = ({ title, imageUrl, size, history, linkUrl, match }) => {
+    let navigate = useNavigate();
+    console.log(navigate);
+    return (
+        <div className= {`${size} menu-container`} onClick={()=> navigate( `${linkUrl}`)}> 
         <div 
             className="background-image"
             style= {{ 
@@ -16,6 +19,8 @@ const MenuContainer = ({ title, imageUrl, size }) => (
             <span className="subtitle"> SHOP NOW!</span>
         </div>
     </div>
-); 
+    );
+    
+}; 
 
 export default MenuContainer;
