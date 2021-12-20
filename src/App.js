@@ -1,40 +1,20 @@
 import React from 'react';
-import {Routes, Route, Link} from 'react-router-dom';
+import {Routes, Route} from 'react-router-dom';
 
 import './App.css';
 
 import HomePage from './pages/homepage/homepage.component';
-
-const HatsPage = () => {
-  return(
-    <div>
-    <h1> HATS PAGE </h1>
-    <Link to="about">
-      <h2> About Hats </h2>
-    </Link>
-    <Routes>
-      <Route path="about/*" element={<AboutHats />} />
-    </Routes>
-  </div>
-  );
-};
-
-const AboutHats = () => {
-  return(
-  <div>
-    <h1> More information on hats </h1>
-  </div>
-  );
-};
+import ShopPage from './pages/shop/shop.component';
+import Header from './components/header/header.component'
 
 function App() {
   return (
  
       <div>
+        <Header/>
         <Routes>
           <Route exact path='/' element={<HomePage />} />
-          <Route path='shop/hats/*' element={<HatsPage />} />
-  
+          <Route path='/shop' element={<ShopPage />} />
         </Routes>
       </div>
 
