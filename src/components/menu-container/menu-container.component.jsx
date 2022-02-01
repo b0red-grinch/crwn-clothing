@@ -5,7 +5,6 @@ import './menu-container.styles.css'
 
 const MenuContainer = ({ title, imageUrl, size, history, linkUrl, match }) => {
     let navigate = useNavigate();
-    console.log(navigate);
     return (
         <div className= {`${size} menu-container`} onClick={()=> navigate( `${linkUrl}`)}> 
         <div 

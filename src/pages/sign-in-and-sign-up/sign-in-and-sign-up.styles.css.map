@@ -1,9 +1,9 @@
 {
     "version": 3,
-    "mappings": "",
+    "mappings": "AAAA,AAAA,oBAAoB,CAAC;EACjB,KAAK,EAAE,KAAK;EACZ,OAAO,EAAE,IAAI;EACb,eAAe,EAAE,aAAa;EAC9B,MAAM,EAAE,SAAS;CAClB",
     "sources": [
-        "sign-in-and-sign-up.styles.scss"
+        "sign-in-and-sign-out.styles.scss"
     ],
     "names": [],
-    "file": "sign-in-and-sign-up.styles.css"
+    "file": "sign-in-and-sign-out.styles.css"
 }
