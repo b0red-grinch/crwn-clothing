@@ -10,15 +10,17 @@ import './sign-up.styles.scss';
 class SignUp extends React.Component {
     constructor(){
         super();
+
         this.state = {
             displayName: '',
             email: '',
             password: '',
             confirmPassword: ''
-        }
+        };
     }
     handleSubmit = async event => {
         event.preventDefault();
+
         const {displayName, email, password, confirmPassword} = this.state;
 
         if (password !== confirmPassword) {
@@ -30,12 +32,12 @@ class SignUp extends React.Component {
             const { user } = await createUserWithEmailAndPassword(auth, email, password);
             await createUserProfileDocument(user, { displayName });
            
-            this.setState = {
+            this.setState({
                 displayName: '',
                 email: '',
                 password: '',
                 confirmPassword: ''
-            }
+            })
         } catch (error) {
             console.error(error);
         }   

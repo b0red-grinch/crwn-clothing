@@ -1,4 +1,4 @@
-import {getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword } from 'firebase/auth';
+import {getAuth, signInWithPopup, GoogleAuthProvider} from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDoc, setDoc, addDoc, onSnapshot, doc } from 'firebase/firestore';
 
@@ -66,11 +66,9 @@ export const createUserProfileDocument = async (authUser, additionalData) => {
 
     } catch (error) {
       console.log('An error occured', error.message)
-    }
-
-    
-    
+    }    
   }
+  console.log('createUserProfile about to return');
   return docRef;
   
 };
