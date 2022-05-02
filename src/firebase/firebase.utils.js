@@ -68,7 +68,6 @@ export const createUserProfileDocument = async (authUser, additionalData) => {
       console.log('An error occured', error.message)
     }    
   }
-  console.log('createUserProfile about to return');
   return docRef;
   
 };

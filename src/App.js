@@ -1,5 +1,6 @@
 import React from 'react';
-import {Routes, Route} from 'react-router-dom';
+import {Routes, Route, Redirect} from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import './App.css';
 
@@ -9,39 +10,29 @@ import Header from './components/header/header.component';
 import SignInAndSignUp from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import { auth, createUserProfileDocument} from './firebase/firebase.utils';
 import { onSnapshot } from 'firebase/firestore';
+import { setCurrentUser } from './redux/user/user.actions';
 
 class App extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      currentUser: null
-    }
-  }
-
+  
   unsubscribeFromAuth = null;
   
-  //check if user is stored on our database
+//  check if user is stored on our database
   componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth =>{
+    const { setCurrentUser } = this.props 
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
 
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
-
+  
         onSnapshot(userRef, (doc) => {
-
-          this.setState({
-            currentUser: {
+            setCurrentUser({
               id: doc.id,
               ...doc.data()
-            }
           });
-
-          console.log(this.state);
         });
-      } 
+     } 
       
-    this.setState({ currentUser: userAuth });
+  setCurrentUser(userAuth);
     });
   }
 
@@ -52,7 +43,7 @@ class App extends React.Component {
   render () {
     return (
       <div>
-        <Header currentUser={this.state.currentUser} />
+        <Header />
         <Routes>
           <Route exact path='/' element={<HomePage />} />
           <Route path='/shop' element={<ShopPage />} />
@@ -64,4 +55,9 @@ class App extends React.Component {
   
 };
 
-export default App;
+const mapDispatchToProps = (dispatch) => ({
+    setCurrentUser: (user) => dispatch(setCurrentUser(user))
+  }
+)
+
+export default connect(null, mapDispatchToProps)(App);
