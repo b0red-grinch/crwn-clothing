@@ -23,7 +23,7 @@ const db = getFirestore();
 
 
 //create an instance, and authenticating using Google provider object
-const provider = new GoogleAuthProvider()
+const provider = new GoogleAuthProvider();
 provider.setCustomParameters({ prompt: 'select_account' });
 export const auth = getAuth();
 export const signInPopUp = () => (signInWithPopup(auth, provider));
