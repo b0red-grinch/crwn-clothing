@@ -16,3 +16,22 @@ export const addItemToCart = (cartItems, cartItemToAdd) => {
     //if cardItem does not exist, add to the list and create a new quantify property
     return [...cartItems, {...cartItemToAdd, quantity:1}];
 }
+
+export const removeItemFromCart = (cartItems, cartItemToRemove) => {
+    //check if the item is in the list
+    const existingCartItem = cartItems.find(
+        (cartItem) => (cartItem.id === cartItemToRemove.id)
+    );
+
+    if (existingCartItem.quantity === 1) {
+        return cartItems.filter(
+            (cartItem) => cartItem.id !== cartItemToRemove.id 
+        )
+    }
+
+    return cartItems.map(
+            (cartItem) => cartItem.id === cartItemToRemove.id ?
+            {...cartItem, quantity: cartItem.quantity - 1} : cartItem
+    ) 
+
+}
