@@ -1,5 +1,5 @@
 .collection-item {
-  width: 22%;
+  width: 22vw;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -22,11 +22,16 @@
   margin-bottom: 5px;
 }
 
+.collection-item:hover .custom-button {
+  visibility: visible;
+}
+
 .collection-item .custom-button {
   width: 80%;
   opacity: 0.7;
   position: absolute;
   top: 255px;
+  visibility: hidden;
 }
 
 .collection-item:hover .image {
