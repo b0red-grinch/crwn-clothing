@@ -7,18 +7,19 @@ import { selectDirectorySections } from '../../redux/directory/directory.selecto
 import MenuContainer from '../menu-container/menu-container.component';
 
 import './directory-menu.styles.css';
+import { DirectoryMenuContainer } from './directory-menu.styles';
 
 
 const Directory = ({ sections }) => (
   
-            <div className="directory-menu">
+            <DirectoryMenuContainer>
                 {
                     sections.map(({ id, ...otherSectionProps }) => (
                         <MenuContainer key={id} {...otherSectionProps} />
                     ))
                 }
 
-            </div>
+            </DirectoryMenuContainer>
         
 )
 

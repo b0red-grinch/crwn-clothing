@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { toggleCartHidden } from '../../redux/cart/cart.actions';
 
 import './cart-dropdown.styles.scss';
+import { CartDropDownContainer, CartItemsContainer, EmptyMessage, CartCustomButton } from './cart-dropdown.styles';
 
 const CartDropDown = ({ cartItems, dispatch }) => {
     let navigate = useNavigate();
@@ -18,20 +19,20 @@ const CartDropDown = ({ cartItems, dispatch }) => {
     }
 
     return(
-    <div className='cart-dropdown' >
+    <CartDropDownContainer>
         { cartItems.length ? (
-            <div className='cart-items'>
+            <CartItemsContainer>
                 {cartItems.map(cartItem => (
                     <CartItem key={cartItem.id} item={cartItem}/>
                 ))}
-            </div>
+            </CartItemsContainer>
             ) : (
-                <span className='empty-message'> Your cart is empty</span>
+                <EmptyMessage> Your cart is empty</EmptyMessage>
             ) 
         }
-        <CustomButton onClick={navigateToCheckoutPage}> GO TO CHECKOUT </CustomButton>
+        <CartCustomButton onClick={navigateToCheckoutPage}> GO TO CHECKOUT </CartCustomButton>
         
-    </div>
+    </CartDropDownContainer>
     )
 };
 

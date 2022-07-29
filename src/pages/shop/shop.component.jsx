@@ -5,7 +5,6 @@ import CollectionsOverview from '../../components/collection-overview/collection
 import CollectionPage from '../collection/collection.component';
 
 const ShopPage = () => {
-        console.log(useMatch);
         return (
             <div className='shop-page'> 
                 <CollectionsOverview />
