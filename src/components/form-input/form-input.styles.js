@@ -36,7 +36,7 @@ margin: 25px 0;
 }
 
 &:focus ~ label {
-  ${shrinkLabel}
+${shrinkLabel}
 }
 `
 
@@ -54,6 +54,3 @@ export const FormInputLabel = styled.label`
     ${shrinkLabel}
     }
 `
-
-
-

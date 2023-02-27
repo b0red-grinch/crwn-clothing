@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 
-
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
 
@@ -24,7 +23,6 @@ export const FormContainer = styled.form`
 `;
 
 export const FormInputStyled = styled(FormInput)`
-
 
 `;
 

@@ -9,42 +9,32 @@ import ShopPage from './pages/shop/shop.component';
 import CheckoutPage from './pages/checkout/checkout.component';
 import SignInAndSignUp from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import CollectionPage from './pages/collection/collection.component';
+import CollectionsOverview from './components/collection-overview/collection-overview.component';
 import Header from './components/header/header.component';
 import Directory from './components/directory-menu/directory-menu.component'
 import NoMatch from './components/no-match/no-match.component';
 
 
+import { checkUserSession } from './redux/user/user.actions';
 
-import { auth, createUserProfileDocument} from './firebase/firebase.utils';
-import { onSnapshot } from 'firebase/firestore';
-import { setCurrentUser } from './redux/user/user.actions';
+
 import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from './redux/user/user.selector';
-
+import { selectCollectionsForPreview } from './redux/shop/shop.selector';
 
 class App extends React.Component {
-  
-  unsubscribeFromAuth = null;
+
+ unsubscribeFromAuth = null;
   
 //  check if user is stored on our database
   componentDidMount() {
-    const { setCurrentUser } = this.props 
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
-
-      if (userAuth) {
-        const userRef = await createUserProfileDocument(userAuth);
-  
-        onSnapshot(userRef, (doc) => {
-            setCurrentUser({
-              id: doc.id,
-              ...doc.data()
-          });
-        });
-     } 
+    const { checkUserSession } = this.props;
+    checkUserSession();
+    
+//   addCollectionAndDocument("collection", collectionsArray.map(({ title, items }) =>({ title, items }))
+//   );
       
-  setCurrentUser(userAuth);
-    });
-  }
+}
 
   componentWillUnmount() {
     this.unsubscribeFromAuth();
@@ -57,8 +47,12 @@ class App extends React.Component {
         <Header />
         <Routes>
           <Route  path="/" element={<HomePage />} />
-          <Route  path="/shop" element={<ShopPage />} />
-          <Route  path="/shop/:collectionId" element={<CollectionPage />} />
+
+          <Route  path="/shop" element={<ShopPage />}>
+            <Route  path="" element={<CollectionsOverview />} />
+            <Route  path=":collectionId" element={<CollectionPage />} />
+          </Route> 
+
           <Route exact path="/checkout" element={<CheckoutPage />} />
             <Route exact 
             path='/signin' 
@@ -70,7 +64,7 @@ class App extends React.Component {
               )  
             } 
             />
-            <Route path="*" element={<NoMatch />} />
+
         </Routes>
       </div>
   );
@@ -79,12 +73,13 @@ class App extends React.Component {
 };
 
 const mapStatetoProps = createStructuredSelector({
-  currentUser: selectCurrentUser
+  currentUser: selectCurrentUser,
+  collectionsArray: selectCollectionsForPreview
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    setCurrentUser: (user) => dispatch(setCurrentUser(user))
-  }
-)
+const mapDispatchtoProps = (dispatch) => ({
+  checkUserSession: () => dispatch(checkUserSession())
+})
 
-export default connect(mapStatetoProps, mapDispatchToProps)(App);
+
+export default connect(mapStatetoProps, mapDispatchtoProps)(App); 
