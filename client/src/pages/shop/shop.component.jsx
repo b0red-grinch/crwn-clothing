@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 
 import { fetchCollectionStart } from '../../redux/shop/shop.actions'
-
+import WithSpinner from '../../components/with-spinner/with-spinner.component';
 
 const ShopPage = ({fetchCollectionStart}) => {
     useEffect( () => {

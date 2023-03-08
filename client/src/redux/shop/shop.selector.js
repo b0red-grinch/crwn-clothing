@@ -7,6 +7,10 @@ export const selectCollections = createSelector(
     [selectShop],
     shop => shop.collections
 );
+export const selectLoading = createSelector( 
+    [selectShop],
+    shop => shop.isLoading
+);
 
 export const selectCollectionsForPreview = createSelector(
     [selectCollections],

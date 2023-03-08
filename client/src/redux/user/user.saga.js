@@ -66,7 +66,7 @@ export function* googleSignInAsync () {
 export function* emailSignInAsync ({payload :{email, password}}) {
     try{
         const { user } = yield signInWithEmailAndPassword(auth, email, password);
-        yield call(getSnapshotFromUserAuth,user);
+        yield call(getSnapshotFromUserAuth, user);
     }
     catch (error) {
         yield put(signInFailure(error));

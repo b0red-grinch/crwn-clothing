@@ -12,7 +12,7 @@ import CollectionItem from '../../components/collection-item/collection-item.com
 
 const CollectionPage = () => {
     const {collectionId} = useParams();
-    const collection = useSelector(state => selectCollection(collectionId)(state));
+    const collection = useSelector(selectCollection(collectionId));
 
     const { title, items } = collection;
 

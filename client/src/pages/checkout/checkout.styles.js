@@ -40,6 +40,6 @@ export const TestWarningBlock = styled.div`
 `
 
 export const StripeButtonStyled = styled(StripeCheckoutButton)`
-    margin-left: auto;
-    margin-top: 50px;
+  display: flex;
+  align-items: center;
 `

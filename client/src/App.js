@@ -1,6 +1,6 @@
-import React from 'react';
-import {Routes, Route, Navigate, useParams} from 'react-router-dom';
-import { connect } from 'react-redux';
+import React, { useEffect } from 'react';
+import {Routes, Route, Navigate} from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import './App.css';
 
@@ -11,53 +11,43 @@ import SignInAndSignUp from './pages/sign-in-and-sign-up/sign-in-and-sign-up.com
 import CollectionPage from './pages/collection/collection.component';
 import CollectionsOverview from './components/collection-overview/collection-overview.component';
 import Header from './components/header/header.component';
-import Directory from './components/directory-menu/directory-menu.component'
-import NoMatch from './components/no-match/no-match.component';
-
-
+import WithSpinner from './components/with-spinner/with-spinner.component';
 import { checkUserSession } from './redux/user/user.actions';
-
 
 import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from './redux/user/user.selector';
-import { selectCollectionsForPreview } from './redux/shop/shop.selector';
+import { selectCollectionsForPreview, selectLoading } from './redux/shop/shop.selector';
 
-class App extends React.Component {
+const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
+const CollectionPageWithSpinner = WithSpinner(CollectionPage);
 
- unsubscribeFromAuth = null;
-  
+const App = () => {
+ const loading = useSelector(selectLoading);
+ const currentUser = useSelector(selectCurrentUser);
+ const dispatch = useDispatch();
+ 
+
 //  check if user is stored on our database
-  componentDidMount() {
-    const { checkUserSession } = this.props;
-    checkUserSession();
+  useEffect( () => {
+    dispatch(checkUserSession())}, [dispatch]);
     
 //   addCollectionAndDocument("collection", collectionsArray.map(({ title, items }) =>({ title, items }))
 //   );
       
-}
-
-  componentWillUnmount() {
-    this.unsubscribeFromAuth();
-  }
-
-  render () {
-
     return (
       <div>
         <Header />
         <Routes>
           <Route  path="/" element={<HomePage />} />
-
           <Route  path="/shop" element={<ShopPage />}>
-            <Route  path="" element={<CollectionsOverview />} />
-            <Route  path=":collectionId" element={<CollectionPage />} />
+            <Route  path="" element ={ <CollectionsOverviewWithSpinner isLoading={loading} /> }/>
+            <Route  path=":collectionId" element ={<CollectionPageWithSpinner isLoading={loading} />} />
           </Route> 
-
-          <Route exact path="/checkout" element={<CheckoutPage />} />
+            <Route exact path="/checkout" element={<CheckoutPage />} /> 
             <Route exact 
             path='/signin' 
             element={
-              this.props.currentUser ? (
+              currentUser ? (
                 <Navigate replace to="/" />
               ):(
                 <SignInAndSignUp />
@@ -68,7 +58,6 @@ class App extends React.Component {
         </Routes>
       </div>
   );
-  }
   
 };
 
@@ -82,4 +71,4 @@ const mapDispatchtoProps = (dispatch) => ({
 })
 
 
-export default connect(mapStatetoProps, mapDispatchtoProps)(App); 
+export default App; 

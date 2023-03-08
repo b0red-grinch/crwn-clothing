@@ -1,16 +1,24 @@
-import React from 'react';
+import React  from 'react';
 
 import { connect } from 'react-redux';
 import { createStructuredSelector} from 'reselect';
 
 import CheckoutItem from '../../components/checkout-item/checkout-item.component';
 import { selectCartItems, selectCartTotal } from '../../redux/cart/cart.selectors'
-import { CheckoutHeaderContainer, CheckoutPageContainer, HeaderBlock, StripeButtonStyled, Total, TestWarningBlock } from './checkout.styles';
+import { CheckoutHeaderContainer, CheckoutPageContainer, HeaderBlock, Total, TestWarningBlock, StripeButtonStyled } from './checkout.styles';
+
+
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 
 
 import './checkout.styles.scss';
 
-const CheckoutPage = ({ cartItems, total }) => (
+const stripePromise = loadStripe('pk_test_51LJLxKHat1IclGpV702ENq1hq2LX4RyEUKN1PWgJgSlpuSKqsYDxZmxtOAChssdKaiKcm2axN3ewPhSaTe3mRstf00pZEJW2BT');
+
+const CheckoutPage = ({ cartItems, total }) => {
+   
+    return(
     <CheckoutPageContainer>
         <CheckoutHeaderContainer> 
             <HeaderBlock className='header-block'>
@@ -46,9 +54,12 @@ const CheckoutPage = ({ cartItems, total }) => (
             <br/>
             4242 4242 4242 4242 - Exp: 01/23 - CVV: 123
         </TestWarningBlock>
-        <StripeButtonStyled price={total} />
+            <Elements stripe={stripePromise}>
+            <StripeButtonStyled price={total} />
+            </Elements>
     </CheckoutPageContainer>
-)
+    )
+}
 const mapStateToProps = createStructuredSelector({
     cartItems: selectCartItems,
     total: selectCartTotal
