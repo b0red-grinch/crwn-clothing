@@ -13,11 +13,10 @@ const StripeCheckoutButton = ({ price }) => {
     const stripe = useStripe();
     const elements = useElements();
 
-    const stripePrice = price * 100;
 
     useEffect(() => {
         // Create PaymentIntent as soon as the page loads
-        axios.post("/create-payment-intent", JSON.stringify({items: [{ id: 'sneakers' }]}))
+        axios.post("/create-payment-intent", { price: price })
           .then(res => {
               const { clientSecret } = res.data;
               setClientSecret(clientSecret);
@@ -36,7 +35,6 @@ const StripeCheckoutButton = ({ price }) => {
         ev.preventDefault();
         setProcessing(true);
     
-        console.log(pi);
         const payload = await stripe.confirmCardPayment(pi, {
           payment_method: {
             card: elements.getElement(CardElement)

@@ -2,11 +2,21 @@ const express = require("express");
 const path = require("path");
 const app = express();
 
-// This is your test secret API key.
-const stripe = require("stripe")('sk_test_51LJLxKHat1IclGpVcawosCutK3wBSw8BZrkke5lmpihnb0QzNYAaTX8uSM0aLu6QOgJYMIND0JQCQQNlC8APkj1H00srb6smJr');
+if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
-app.use(express.static(path.join(__dirname, 'client/build')));
 app.use(express.json());
+
+// This is your test secret API key.
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'client/build')));
+
+  app.get('*', function(req, res) {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  });
+
+}
 
 const calculateOrderAmount = (items) => {
   // Replace this constant with a calculation of the order's amount
@@ -15,12 +25,13 @@ const calculateOrderAmount = (items) => {
   return 1400;
 };
 
+
 app.post("/create-payment-intent", async (req, res) => {
-  const { items } = req.body;
+  const { price } = req.body.price;
 
   // Create a PaymentIntent with the order amount and currency
   const paymentIntent = await stripe.paymentIntents.create({
-    amount: 1400,
+    amount:  1400,
     currency: "usd",
     automatic_payment_methods: {
       enabled: true,
