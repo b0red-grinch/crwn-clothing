@@ -1,30 +1,41 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 
 import CartItem from '../cart-item/cart-item.component';
-import { selectCartItems } from '../../redux/cart/cart.selectors';
-import { createStructuredSelector } from 'reselect';
 import { useNavigate } from 'react-router-dom';
-import { toggleCartHidden } from '../../redux/cart/cart.actions';
+import { cartHiddenVar, cartItemsVar } from '../../cache';
 
 import './cart-dropdown.styles.scss';
 import { CartDropDownContainer, CartItemsContainer, EmptyMessage, CartCustomButton } from './cart-dropdown.styles';
+import { useReactiveVar } from '@apollo/client';
+
+import { gql, useQuery } from '@apollo/client';
+import Spinner from '../with-spinner/with-spinner.component';
+
+const GET_CART_ITEMS = gql`
+query GetCartItems { 
+    cartItems @client 
+}
+`;
 
 const CartDropDown = () => {
     let navigate = useNavigate();
-    const dispatch = useDispatch();
-    const cartItems = useSelector(selectCartItems);
+    
+    const { data, loading, error } = useQuery(GET_CART_ITEMS);
+    // const cartItems = useReactiveVar(cartItemsVar);
+
+    if (loading) return < Spinner/>;
+    if (error) return <p>ERROR: {error.message}</p>;
 
     const navigateToCheckoutPage = () => {
         navigate('/checkout');
-        dispatch(toggleCartHidden());
+        cartHiddenVar(!cartHiddenVar());
     }
 
     return(
     <CartDropDownContainer>
-        { cartItems.length ? (
+        { data.cartItems.length ? (
             <CartItemsContainer>
-                {cartItems.map(cartItem => (
+                {data.cartItems.map(cartItem => (
                     <CartItem key={cartItem.id} item={cartItem}/>
                 ))}
             </CartItemsContainer>
@@ -38,8 +49,5 @@ const CartDropDown = () => {
     )
 };
 
-const mapStateToProps = createStructuredSelector({
-    cartItems: selectCartItems,
-})
 
 export default CartDropDown;

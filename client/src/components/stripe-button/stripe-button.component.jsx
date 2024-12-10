@@ -22,7 +22,8 @@ const StripeCheckoutButton = ({ price }) => {
               setClientSecret(clientSecret);
           })
       }, []);
-    
+
+   
 
       const handleChange = async (event) => {
         // Listen for changes in the CardElement

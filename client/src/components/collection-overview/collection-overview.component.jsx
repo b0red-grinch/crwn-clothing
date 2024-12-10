@@ -1,28 +1,42 @@
 import React from 'react';
-
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+import { useQuery, gql } from '@apollo/client';
 
 import CollectionPreview from '../collection-preview/collection-preview.component';
 import { selectCollectionsForPreview } from '../../redux/shop/shop.selector';
+import Spinner from '../with-spinner/with-spinner.component';
 
 //import './collection-overview.styles.css'
 import { CollectionOverviewContainer } from './collection-overview.styles';
 
-const CollectionsOverview = ({ collections }) => (
+const GET_COLLECTIONS = gql`
+    query {        
+        collections {
+        id
+        title
+        items {
+            id 
+            name
+            price
+            imageUrl
+        }
+    }
+    }
+`
+
+const CollectionsOverview = ( ) => {
+    const { data, loading, error } = useQuery(GET_COLLECTIONS);
+    if (loading) return <Spinner/>;
+    
+    return(
     <CollectionOverviewContainer>
         {
-                collections.map(({ id, ...otherCollectionProps }) => (
+                data.collections.map(({ id, ...otherCollectionProps }) => (
                     <CollectionPreview key={id} {...otherCollectionProps} />
                 ))
             }
     </CollectionOverviewContainer>
+    )
 
-)
+}
 
-
-const mapStatetoProps = createStructuredSelector({
-    collections: selectCollectionsForPreview
-})
-
-export default connect(mapStatetoProps)(CollectionsOverview);
+export default CollectionsOverview;

@@ -1,23 +1,27 @@
 import React  from 'react';
+import { useReactiveVar } from '@apollo/client';
 
-import { connect } from 'react-redux';
-import { createStructuredSelector} from 'reselect';
+// import { connect } from 'react-redux';
+// import { createStructuredSelector} from 'reselect';
+// import { selectCartItems, selectCartTotal } from '../../redux/cart/cart.selectors'
 
 import CheckoutItem from '../../components/checkout-item/checkout-item.component';
-import { selectCartItems, selectCartTotal } from '../../redux/cart/cart.selectors'
 import { CheckoutHeaderContainer, CheckoutPageContainer, HeaderBlock, Total, TestWarningBlock, StripeButtonStyled } from './checkout.styles';
-
 
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 
-
 import './checkout.styles.scss';
+import { calculateTotal, cartItemsVar } from '../../cache';
+
 
 const stripePromise = loadStripe('pk_test_51LJLxKHat1IclGpV702ENq1hq2LX4RyEUKN1PWgJgSlpuSKqsYDxZmxtOAChssdKaiKcm2axN3ewPhSaTe3mRstf00pZEJW2BT');
 
-const CheckoutPage = ({ cartItems, total }) => {
-   
+const CheckoutPage = (
+    // { total }
+) => {
+    const cartItems = useReactiveVar(cartItemsVar);
+    const total = calculateTotal(cartItems);
     return(
     <CheckoutPageContainer>
         <CheckoutHeaderContainer> 
@@ -60,9 +64,9 @@ const CheckoutPage = ({ cartItems, total }) => {
     </CheckoutPageContainer>
     )
 }
-const mapStateToProps = createStructuredSelector({
-    cartItems: selectCartItems,
-    total: selectCartTotal
-})
+// const mapStateToProps = createStructuredSelector({
+//     total: selectCartTotal
+// })
 
-export default connect(mapStateToProps)(CheckoutPage);
+// export default connect(mapStateToProps)(CheckoutPage);
+export default CheckoutPage;
