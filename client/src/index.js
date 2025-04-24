@@ -91,7 +91,7 @@ export const client = new ApolloClient({
   uri: 'https://crwn-clothing.com',
   cache, 
   fetchOptions: {
-    mode: 'no-cors'
+    mode: 'cors'
   },
   typeDefs,
   // Mutation: resolvers, 
