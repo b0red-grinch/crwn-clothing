@@ -88,7 +88,7 @@ persistFunction();
 
 
 export const client = new ApolloClient({
-  uri: 'https://crwn-clothing.com',
+  uri: 'http://localhost:4000/',
   cache, 
   fetchOptions: {
     mode: 'cors'
