@@ -88,7 +88,7 @@ persistFunction();
 
 
 export const client = new ApolloClient({
-  uri: 'http://localhost:4000/',
+  uri: 'https://graphql-server-gold.vercel.app/',
   cache, 
   fetchOptions: {
     mode: 'cors'
